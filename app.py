@@ -6,8 +6,8 @@ app = Flask(__name__, template_folder='.')
 app.secret_key = "barterzone_super_secret_key" # এটি সেশন সুরক্ষার জন্য
 
 # অ্যাডমিন লগইন তথ্য
-ADMIN_USERNAME = "admin"
-ADMIN_PASSWORD = "123" # আপনি এখানে নিজের পছন্দমতো পাসওয়ার্ড সেট করুন
+ADMIN_USERNAME = "admin@berterzone.com"
+ADMIN_PASSWORD = "Habiba@19892" # আপনি এখানে নিজের পছন্দমতো পাসওয়ার্ড সেট করুন
 
 # সাময়িক ডেটা স্টোরেজ (Vercel-এর জন্য নিরাপদ)
 items_list = []
