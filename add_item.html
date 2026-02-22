@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Add your product</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+</head>
+<body class="bg-light container py-5">
+    <div class="card shadow border-0 p-4 mx-auto" style="max-width: 600px;">
+        <h2 class="mb-4 text-center">Add new product</h2>
+        <div class="alert alert-warning">
+            To upload a product(<b>01712572371</b>) Please send 1$ or 120 BDT
+        </div>
+        <form method="POST">
+            <input type="text" name="name" placeholder="Product name" class="form-control mb-3" required>
+            <textarea name="desc" placeholder="Details abiut your product" class="form-control mb-3" rows="4" required></textarea>
+            <input type="text" name="exchange" placeholder="What do you want in exchange" class="form-control mb-3" required>
+            <input type="text" name="trx_id" placeholder="please provide the bkash/ Nagad TrxID" class="form-control mb-3" required>
+            <button class="btn btn-success w-100 py-2 fw-bold">Submit</button>
+        </form>
+        <a href="/" class="btn btn-link mt-3 text-center d-block">Return</a>
+    </div>
+</body>
+</html>
