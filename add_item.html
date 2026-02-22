@@ -3,44 +3,42 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Add Item - Berterzone</title>
+    <title>Add Item - Barterzone</title>
     <style>
-        body { font-family: Arial, sans-serif; background-color: #f4f4f4; margin: 0; padding: 20px; }
-        .container { max-width: 500px; background: white; padding: 20px; border-radius: 8px; box-shadow: 0 0 10px rgba(0,0,0,0.1); margin: auto; }
-        h2 { text-align: center; color: #333; }
-        label { display: block; margin: 10px 0 5px; }
-        input, textarea, select { width: 100%; padding: 10px; margin-bottom: 15px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; }
-        button { width: 100%; padding: 10px; background-color: #28a745; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 16px; }
+        body { font-family: Arial, sans-serif; background-color: #f4f4f4; padding: 20px; }
+        .container { max-width: 500px; background: white; padding: 20px; border-radius: 8px; margin: auto; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
+        .payment-box { background: #fff3f3; border: 1px solid #ffcccc; padding: 15px; border-radius: 5px; margin-bottom: 15px; }
+        input, textarea, select { width: 100%; padding: 10px; margin: 10px 0; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; }
+        .payment-box p { margin: 5px 0; color: #d9534f; font-weight: bold; }
+        button { width: 100%; padding: 10px; background-color: #28a745; color: white; border: none; cursor: pointer; border-radius: 4px; font-size: 16px; font-weight: bold; }
         button:hover { background-color: #218838; }
-        .back-link { display: block; text-align: center; margin-top: 15px; text-decoration: none; color: #007bff; }
     </style>
 </head>
 <body>
+    <div class="container">
+        <h2>নতুন পণ্য যোগ করুন</h2>
+        
+        <div class="payment-box">
+            <p>⚠️ পেমেন্ট বাধ্যতামূলক (Fee: 1$ / 120 BDT)</p>
+            <p>বিকাশ/নগদ (Send Money): 01712572371</p>
+        </div>
 
-<div class="container">
-    <h2>নতুন পণ্য যোগ করুন</h2>
-    <form action="#" method="POST">
-        <label for="item_name">পণ্যের নাম</label>
-        <input type="text" id="item_name" name="item_name" placeholder="যেমন: স্মার্টফোন" required>
-
-        <label for="category">ক্যাটাগরি</label>
-        <select id="category" name="category">
-            <option value="electronics">ইলেকট্রনিক্স</option>
-            <option value="fashion">ফ্যাশন</option>
-            <option value="home">গৃহস্থালি</option>
-            <option value="others">অন্যান্য</option>
-        </select>
-
-        <label for="description">বিবরণ</label>
-        <textarea id="description" name="description" rows="4" placeholder="আপনার পণ্য সম্পর্কে বিস্তারিত লিখুন..." required></textarea>
-
-        <label for="exchange_with">বিনিময়ে কী চান?</label>
-        <input type="text" id="exchange_with" name="exchange_with" placeholder="যেমন: ল্যাপটপ" required>
-
-        <button type="submit">পণ্যটি সাবমিট করুন</button>
-    </form>
-    <a href="/" class="back-link">হোম পেজে ফিরে যান</a>
-</div>
-
+        <form action="/add" method="POST">
+            <input type="text" name="item_name" placeholder="পণ্যের নাম" required>
+            <select name="category">
+                <option value="electronics">ইলেকট্রনিক্স</option>
+                <option value="fashion">ফ্যাশন</option>
+                <option value="home">গৃহস্থালি</option>
+            </select>
+            <textarea name="description" placeholder="বিবরণ" required></textarea>
+            <input type="text" name="exchange_with" placeholder="বিনিময়ে কী চান?" required>
+            
+            <hr>
+            <p style="font-size: 14px; color: #555;">পেমেন্ট করার পর ট্রানজেকশন আইডি দিন:</p>
+            <input type="text" name="trx_id" placeholder="Transaction ID (TrxID)" required>
+            
+            <button type="submit">পণ্যটি সাবমিট করুন</button>
+        </form>
+    </div>
 </body>
 </html>

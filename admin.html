@@ -2,93 +2,39 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Dashboard - ChainHub</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <title>Admin Dashboard - Barterzone</title>
     <style>
-        body { background-color: #f8f9fa; }
-        .card { border-radius: 15px; border: none; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
-        .btn-approve { background-color: #28a745; color: white; border-radius: 20px; }
-        .header-section { background: #007bff; color: white; padding: 20px; border-radius: 0 0 20px 20px; }
+        body { font-family: sans-serif; padding: 30px; background: #f0f2f5; }
+        .card { background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        th, td { border: 1px solid #ddd; padding: 12px; text-align: left; }
+        th { background-color: #d9534f; color: white; }
+        .trx-style { font-family: monospace; font-weight: bold; color: #007bff; }
     </style>
 </head>
 <body>
-
-<div class="header-section text-center mb-4">
-    <h1>ChainHub Admin Dashboard</h1>
-    <p>Manage Products, About Us, and Refund Policies</p>
-    <a href="/logout" class="btn btn-light btn-sm">Logout</a>
-</div>
-
-<div class="container">
-    <div class="row">
-        <div class="col-md-5 mb-4">
-            <div class="card p-4">
-                <h4 class="fw-bold mb-3 text-primary">Update Site Information</h4>
-                <form action="/update_info" method="POST">
-                    <div class="mb-3">
-                        <label class="form-label fw-bold">About Us (Legal Terms)</label>
-                        <textarea name="about" class="form-control" rows="6" placeholder="Write About Us content...">{{ info.about }}</textarea>
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label fw-bold">Refund Policy (Legal Procedure)</label>
-                        <textarea name="refund" class="form-control" rows="6" placeholder="Write Refund Policy content...">{{ info.refund }}</textarea>
-                    </div>
-                    <button type="submit" class="btn btn-primary w-100 fw-bold">Update Policies</button>
-                </form>
-            </div>
-        </div>
-
-        <div class="col-md-7">
-            <div class="card p-4">
-                <h4 class="fw-bold mb-3 text-success">Pending Products</h4>
-                <div class="table-responsive">
-                    <table class="table table-hover">
-                        <thead>
-                            <tr>
-                                <th>Product</th>
-                                <th>Owner</th>
-                                <th>TrxID</th>
-                                <th>Action</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {% for item in items %}
-                            <tr>
-                                <td>
-                                    <strong>{{ item.name }}</strong><br>
-                                    <small class="text-muted">For: {{ item.exchange }}</small>
-                                </td>
-                                <td>{{ item.owner }}</td>
-                                <td><code>{{ item.trx_id }}</code></td>
-                                <td>
-                                    <a href="/approve/{{ item.id }}" class="btn btn-approve btn-sm px-3">Approve</a>
-                                </td>
-                            </tr>
-                            {% else %}
-                            <tr>
-                                <td colspan="4" class="text-center text-muted">No pending products to approve.</td>
-                            </tr>
-                            {% endfor %}
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-            
-            <div class="card p-4 mt-4">
-                <h4 class="fw-bold mb-3">Registered Users</h4>
-                <ul class="list-group list-group-flush">
-                    {% for user in users %}
-                    <li class="list-group-item d-flex justify-content-between align-items-center">
-                        {{ user.mobile }}
-                        <span class="badge bg-secondary rounded-pill">NID: {{ user.nid }}</span>
-                    </li>
-                    {% endfor %}
-                </ul>
-            </div>
-        </div>
+    <div class="card">
+        <h1>অ্যাডমিন প্যানেল (পেমেন্ট চেক করুন)</h1>
+        <table>
+            <thead>
+                <tr>
+                    <th>পণ্যের নাম</th>
+                    <th>বিনিময়ে যা চান</th>
+                    <th>Transaction ID</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in items %}
+                <tr>
+                    <td>{{ item.name }}</td>
+                    <td>{{ item.exchange }}</td>
+                    <td class="trx-style">{{ item.trxid }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <br>
+        <a href="/">হোম পেজ</a>
     </div>
-</div>
-
 </body>
 </html>
