@@ -1,10 +1,15 @@
-<div class="container">
-    <h2>নতুন পণ্য যোগ করুন</h2>
-    <p style="background:#fff3f3; color:red; padding:10px;">বিকাশ/নগদ (Send Money): 01712572371 <br> ফি: ১২০ টাকা (বাধ্যতামূলক)</p>
-    <form action="/add" method="POST">
-        <input type="text" name="item_name" placeholder="পণ্যের নাম" required>
-        <textarea name="description" placeholder="বিবরণ" required></textarea>
-        <input type="text" name="trx_id" placeholder="Transaction ID (TrxID)" required>
-        <button type="submit">পণ্যটি সাবমিট করুন</button>
+<div style="max-width: 400px; margin: auto; padding: 20px; border: 1px solid #ddd; border-radius: 10px;">
+    <h2>পণ্য যোগ করুন</h2>
+    <form method="POST">
+        <label>পণ্যের নাম:</label><br>
+        <input type="text" name="item_name" required style="width:100%; padding:8px; margin:10px 0;"><br>
+        
+        <label>আপনার ইমেইল:</label><br>
+        <input type="email" name="user_email" required style="width:100%; padding:8px; margin:10px 0;"><br>
+        
+        <label>TrxID (পেমেন্ট আইডি):</label><br>
+        <input type="text" name="trx_id" required style="width:100%; padding:8px; margin:10px 0;"><br>
+        
+        <button type="submit" style="background: #28a745; color: white; padding: 10px; width: 100%; border: none; border-radius: 5px;">সাবমিট করুন</button>
     </form>
 </div>

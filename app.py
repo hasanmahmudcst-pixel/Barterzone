@@ -1,22 +1,20 @@
 from flask import Flask, render_template, request, redirect, url_for, session
 from functools import wraps
-import os
 
 app = Flask(__name__, template_folder='.')
-app.secret_key = "barterzone_super_secret_key" # এটি সেশন সুরক্ষার জন্য
+app.secret_key = "barterzone_secret_key" # সেশন নিরাপত্তার জন্য
 
-# অ্যাডমিন লগইন তথ্য
-ADMIN_USERNAME = "admin@berterzone.com"
-ADMIN_PASSWORD = "Habiba@19892" # আপনি এখানে নিজের পছন্দমতো পাসওয়ার্ড সেট করুন
+# অ্যাডমিন ক্রেডেনশিয়াল (প্রয়োজনে এখান থেকে পরিবর্তন করুন)
+ADMIN_USERNAME = "admin"
+ADMIN_PASSWORD = "123"
 
-# সাময়িক ডেটা স্টোরেজ (Vercel-এর জন্য নিরাপদ)
 items_list = []
 site_settings = {
     'about': 'আমাদের সম্পর্কে তথ্য এখানে লিখুন।',
     'refund': 'রিফান্ড পলিসি এখানে লিখুন।'
 }
 
-# নিরাপত্তা ডেকোরেটর: লগইন ছাড়া অ্যাডমিন পেজে যাওয়া যাবে না
+# অ্যাডমিন প্যানেল সুরক্ষিত করার ডেকোরেটর
 def login_required(f):
     @wraps(f)
     def decorated_function(*args, **kwargs):
@@ -25,63 +23,58 @@ def login_required(f):
         return f(*args, **kwargs)
     return decorated_function
 
-# --- রুটস (Routes) ---
-
 @app.route('/')
 def home():
     return render_template('index.html', settings=site_settings)
-
-@app.route('/login', methods=['GET', 'POST'])
-def login():
-    error = None
-    if request.method == 'POST':
-        # পাসওয়ার্ড চেক করা হচ্ছে
-        user = request.form.get('username')
-        pwd = request.form.get('password')
-        
-        if user == ADMIN_USERNAME and pwd == ADMIN_PASSWORD:
-            session['logged_in'] = True
-            return redirect(url_for('admin_panel'))
-        else:
-            error = 'ভুল ইউজারনেম অথবা পাসওয়ার্ড!'
-            
-    return render_template('admin_login.html', error=error)
-
-@app.route('/logout')
-def logout():
-    session.pop('logged_in', None)
-    return redirect(url_for('home'))
-
-@app.route('/admin', methods=['GET', 'POST'])
-@login_required # এখানে পাসওয়ার্ড নিরাপত্তা কাজ করবে
-def admin_panel():
-    if request.method == 'POST':
-        # অ্যাডমিন থেকে সাইট আপডেট
-        site_settings['about'] = request.form.get('about_text')
-        site_settings['refund'] = request.form.get('refund_text')
-        return redirect(url_for('admin_panel'))
-    
-    return render_template('admin.html', items=items_list, settings=site_settings)
-
-@app.route('/add', methods=['GET', 'POST'])
-def add_item():
-    if request.method == 'POST':
-        # ইউজার থেকে ডেটা নেওয়া
-        new_item = {
-            'name': request.form.get('item_name'),
-            'category': request.form.get('category'),
-            'trxid': request.form.get('trx_id')
-        }
-        items_list.append(new_item)
-        return redirect(url_for('home'))
-    return render_template('add_item.html')
 
 @app.route('/auth')
 def auth():
     return render_template('auth.html')
 
-# Vercel-এর জন্য হ্যান্ডলার
-app = app
+# পণ্য যোগ করার রুট (আপনার নতুন HTML ডিজাইনের সাথে মিল রেখে)
+@app.route('/add', methods=['GET', 'POST'])
+def add_item():
+    if request.method == 'POST':
+        item = {
+            'name': request.form.get('item_name'),
+            'email': request.form.get('user_email'), # ইমেইল ফিল্ড যুক্ত করা হয়েছে
+            'trxid': request.form.get('trx_id')
+        }
+        items_list.append(item)
+        return redirect(url_for('home'))
+    return render_template('add_item.html')
+
+# লগইন রুট
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    error = None
+    if request.method == 'POST':
+        user = request.form.get('username')
+        pwd = request.form.get('password')
+        if user == ADMIN_USERNAME and pwd == ADMIN_PASSWORD:
+            session['logged_in'] = True
+            return redirect(url_for('admin_panel'))
+        else:
+            error = 'ভুল ইউজারনেম অথবা পাসওয়ার্ড!'
+    return render_template('admin_login.html', error=error)
+
+# অ্যাডমিন প্যানেল রুট (আপনার নতুন টেবিল ডিজাইনের সাথে মিল রেখে)
+@app.route('/admin', methods=['GET', 'POST'])
+@login_required
+def admin_panel():
+    if request.method == 'POST':
+        site_settings['about'] = request.form.get('about_text')
+        site_settings['refund'] = request.form.get('refund_text')
+        return redirect(url_for('admin_panel'))
+    return render_template('admin.html', items=items_list, settings=site_settings)
+
+# লগআউট রুট
+@app.route('/logout')
+def logout():
+    session.pop('logged_in', None)
+    return redirect(url_for('home'))
+
+app = app # Vercel-এর জন্য
 
 if __name__ == '__main__':
     app.run(debug=True)
