@@ -1,39 +1,5 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login / Sign Up - Barterzone</title>
-    <style>
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f0f2f5; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
-        .auth-container { background: #fff; padding: 30px; border-radius: 10px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); width: 100%; max-width: 350px; text-align: center; }
-        h2 { color: #333; margin-bottom: 20px; }
-        input { width: 100%; padding: 12px; margin-bottom: 15px; border: 1px solid #ddd; border-radius: 5px; box-sizing: border-box; }
-        
-        /* এই বাটনটি এখন আপনাকে সরাসরি /add পেজে নিয়ে যাবে */
-        .btn-submit { width: 100%; padding: 12px; background-color: #007bff; color: white; border: none; border-radius: 5px; cursor: pointer; font-size: 16px; text-decoration: none; display: inline-block; }
-        .btn-submit:hover { background-color: #0056b3; }
-        
-        .toggle-text { margin-top: 15px; font-size: 14px; color: #666; }
-        .toggle-text a { color: #007bff; text-decoration: none; }
-    </style>
-</head>
-<body>
-
-<div class="auth-container">
-    <h2>স্বাগতম Barterzone-এ</h2>
-    <form action="/add" method="GET"> 
-        <input type="email" placeholder="আপনার ইমেইল" required>
-        <input type="password" placeholder="পাসওয়ার্ড" required>
-        
-        <button type="submit" class="btn-submit">লগইন করুন</button>
-    </form>
-
-    <div class="toggle-text">
-        <p>অ্যাকাউন্ট নেই? <a href="#">নতুন তৈরি করুন</a></p>
-        <p><a href="/">হোম পেজে ফিরে যান</a></p>
-    </div>
-</div>
-
-</body>
-</html>
+<form action="/add" method="GET">
+    <h2>লগইন করুন</h2>
+    <input type="email" placeholder="ইমেইল" required style="width:100%; padding:10px; margin:10px 0;">
+    <button type="submit" style="width:100%; padding:10px; background:#28a745; color:white; border:none; cursor:pointer;">প্রবেশ করুন</button>
+</form>

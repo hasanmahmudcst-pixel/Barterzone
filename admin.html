@@ -2,39 +2,69 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Dashboard - Barterzone</title>
     <style>
-        body { font-family: sans-serif; padding: 30px; background: #f0f2f5; }
-        .card { background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
-        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
-        th, td { border: 1px solid #ddd; padding: 12px; text-align: left; }
-        th { background-color: #d9534f; color: white; }
-        .trx-style { font-family: monospace; font-weight: bold; color: #007bff; }
+        body { font-family: 'Segoe UI', sans-serif; background: #f0f2f5; margin: 0; padding: 20px; }
+        .container { max-width: 900px; margin: auto; }
+        .card { background: white; padding: 25px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); margin-bottom: 30px; }
+        h2 { color: #333; border-bottom: 2px solid #007bff; padding-bottom: 10px; }
+        
+        /* Form Styling */
+        textarea { width: 100%; height: 100px; padding: 12px; margin: 10px 0; border: 1px solid #ddd; border-radius: 6px; font-size: 14px; }
+        .save-btn { background: #007bff; color: white; border: none; padding: 12px 25px; border-radius: 6px; cursor: pointer; font-weight: bold; }
+        .save-btn:hover { background: #0056b3; }
+
+        /* Table Styling */
+        table { width: 100%; border-collapse: collapse; margin-top: 15px; }
+        th, td { padding: 12px; border: 1px solid #eee; text-align: left; }
+        th { background: #f8f9fa; color: #555; }
+        .trx-id { font-family: monospace; color: #d9534f; font-weight: bold; }
     </style>
 </head>
 <body>
+
+<div class="container">
     <div class="card">
-        <h1>অ্যাডমিন প্যানেল (পেমেন্ট চেক করুন)</h1>
+        <h2>ওয়েবসাইট সেটিং নিয়ন্ত্রণ</h2>
+        <form action="/admin" method="POST">
+            <label><b>About Us (আমাদের সম্পর্কে):</b></label>
+            <textarea name="about_text">{{ settings.about }}</textarea>
+            
+            <label><b>Refund Policy (রিফান্ড পলিসি):</b></label>
+            <textarea name="refund_text">{{ settings.refund }}</textarea>
+            
+            <button type="submit" class="save-btn">Save Changes</button>
+        </form>
+    </div>
+
+    <div class="card">
+        <h2>সাবমিট করা পণ্যের তালিকা</h2>
         <table>
             <thead>
                 <tr>
                     <th>পণ্যের নাম</th>
-                    <th>বিনিময়ে যা চান</th>
-                    <th>Transaction ID</th>
+                    <th>Transaction ID (TrxID)</th>
                 </tr>
             </thead>
             <tbody>
                 {% for item in items %}
                 <tr>
                     <td>{{ item.name }}</td>
-                    <td>{{ item.exchange }}</td>
-                    <td class="trx-style">{{ item.trxid }}</td>
+                    <td class="trx-id">{{ item.trxid }}</td>
                 </tr>
                 {% endfor %}
+                {% if not items %}
+                <tr><td colspan="2" style="text-align:center;">কোনো পণ্য এখনো সাবমিট করা হয়নি।</td></tr>
+                {% endif %}
             </tbody>
         </table>
-        <br>
-        <a href="/">হোম পেজ</a>
     </div>
+    
+    <div style="text-align: center;">
+        <a href="/" style="text-decoration: none; color: #666;">← হোম পেজে ফিরে যান</a>
+    </div>
+</div>
+
 </body>
 </html>
