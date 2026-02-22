@@ -5,8 +5,8 @@ app = Flask(__name__, template_folder='.')
 app.secret_key = "barterzone_secret_key" # সেশন নিরাপত্তার জন্য
 
 # অ্যাডমিন ক্রেডেনশিয়াল (প্রয়োজনে এখান থেকে পরিবর্তন করুন)
-ADMIN_USERNAME = "admin"
-ADMIN_PASSWORD = "123"
+ADMIN_USERNAME = "admin@berterzone.com"
+ADMIN_PASSWORD = "Habiba@19892"
 
 items_list = []
 site_settings = {
