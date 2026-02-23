@@ -3,24 +3,29 @@ from pymongo import MongoClient
 import os
 
 app = Flask(__name__)
-app.secret_key = "barter_secret_key_99"
+app.secret_key = "barter_secret_key_123"
 
 # MongoDB Connection
 MONGO_URI = "mongodb+srv://adminberterzone:Habiba19892@cluster0.pg3xfac.mongodb.net/berterzone_db?retryWrites=true&w=majority"
 client = MongoClient(MONGO_URI)
 db = client['berterzone_db']
 products_collection = db['products']
-settings_collection = db['settings'] # About ও Refund Policy এর জন্য
+settings_collection = db['settings']
 
 @app.route('/')
 def index():
-    products = list(products_collection.find({"status": "Approved"}))
-    # ডাটাবেস থেকে সেটিংস আনা, না থাকলে ডিফল্ট লেখা দেখানো
-    site_settings = settings_collection.find_one() or {
-        "about": "আমাদের সম্পর্কে তথ্য এখানে আসবে।",
-        "refund": "রিফান্ড পলিসি এখানে আসবে।"
-    }
-    return render_template('index.html', products=products, settings=site_settings)
+    try:
+        products = list(products_collection.find())
+        # সেটিংস চেক করা হচ্ছে যাতে 'settings is undefined' এরর না আসে
+        site_settings = settings_collection.find_one()
+        if not site_settings:
+            site_settings = {
+                "about": "আমাদের সম্পর্কে তথ্য যোগ করতে অ্যাডমিন প্যানেলে যান।",
+                "refund": "রিফান্ড পলিসি এখনো সেট করা হয়নি।"
+            }
+        return render_template('index.html', products=products, settings=site_settings)
+    except Exception as e:
+        return f"Database error: {str(e)}"
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -31,43 +36,24 @@ def login():
         flash("ভুল পাসওয়ার্ড!")
     return render_template('auth.html')
 
-@app.route('/add_item', methods=['GET', 'POST'])
-def add_item():
-    if request.method == 'POST':
-        trx_id = request.form.get('trx_id')
-        if not trx_id:
-            flash("Transaction ID প্রদান করা বাধ্যতামূলক।")
-            return redirect(url_for('add_item'))
-            
-        new_product = {
-            "name": request.form.get('name'),
-            "price": request.form.get('price'),
-            "trx_id": trx_id,
-            "status": "Pending"
-        }
-        products_collection.insert_one(new_product)
-        flash("আইটেম সাবমিট হয়েছে! পেমেন্ট ভেরিফাই হলে এটি হোমপেজে দেখাবে।")
-        return redirect(url_for('index'))
-    return render_template('add_item.html')
-
 @app.route('/admin', methods=['GET', 'POST'])
 def admin():
     if not session.get('admin'):
         return redirect(url_for('login'))
     
     if request.method == 'POST':
-        # Admin About Us এবং Refund Policy আপডেট করার লজিক
+        # About ও Refund আপডেট করার লজিক
+        about_text = request.form.get('about')
+        refund_text = request.form.get('refund')
+        
         settings_collection.update_one(
             {}, 
-            {"$set": {
-                "about": request.form.get('about'),
-                "refund": request.form.get('refund')
-            }}, 
+            {"$set": {"about": about_text, "refund": refund_text}}, 
             upsert=True
         )
-        flash("সেটিংস আপডেট হয়েছে!")
+        flash("তথ্য সফলভাবে আপডেট করা হয়েছে!")
         return redirect(url_for('admin'))
-
+        
     products = list(products_collection.find())
     current_settings = settings_collection.find_one() or {"about": "", "refund": ""}
     return render_template('admin.html', products=products, settings=current_settings)
