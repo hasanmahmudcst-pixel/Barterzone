@@ -1,27 +1,35 @@
 <!DOCTYPE html>
 <html>
+<head>
+    <title>Admin Dashboard</title>
+    <style>
+        body { font-family: sans-serif; margin: 20px; }
+        .panel { border: 1px solid #ccc; padding: 20px; border-radius: 8px; margin-bottom: 20px; }
+        textarea { width: 100%; height: 80px; margin-bottom: 10px; }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        th, td { border: 1px solid #ddd; padding: 10px; text-align: left; }
+    </style>
+</head>
 <body>
-    <h2>Admin Dashboard</h2>
-    <form method="POST" style="border:1px solid #ccc; padding:15px;">
-        <h3>Update Site Content</h3>
-        <label>About Us:</label><br>
-        <textarea name="about" rows="3" style="width:100%">{{ settings.about }}</textarea><br><br>
-        <label>Refund Policy:</label><br>
-        <textarea name="refund" rows="3" style="width:100%">{{ settings.refund }}</textarea><br><br>
-        <button type="submit">Update Site Info</button>
-    </form>
-    <hr>
-    <h3>All Submitted Products</h3>
-    <table border="1">
-        <tr><th>Name</th><th>Trx ID</th><th>Status</th></tr>
-        {% for p in products %}
-        <tr>
-            <td>{{ p.name }}</td>
-            <td>{{ p.trx_id }}</td>
-            <td>{{ p.status }}</td>
-        </tr>
-        {% endfor %}
-    </table>
+    <div class="panel">
+        <h2>Update Site Content</h2>
+        <form method="POST">
+            <label>About Us:</label>
+            <textarea name="about">{{ settings.about }}</textarea>
+            <label>Refund Policy:</label>
+            <textarea name="refund">{{ settings.refund }}</textarea>
+            <button type="submit" style="background: #1a73e8; color:white; padding: 10px; border:none; border-radius:5px; cursor:pointer;">Update Website Info</button>
+        </form>
+    </div>
+    <div class="panel">
+        <h3>Product Requests (Check TrxID)</h3>
+        <table>
+            <tr><th>Product</th><th>Price</th><th>TrxID</th></tr>
+            {% for p in products %}
+            <tr><td>{{ p.name }}</td><td>{{ p.price }}</td><td><code>{{ p.trx_id }}</code></td></tr>
+            {% endfor %}
+        </table>
+    </div>
     <br><a href="/logout">Logout</a>
 </body>
 </html>

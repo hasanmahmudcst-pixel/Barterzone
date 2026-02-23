@@ -1,14 +1,21 @@
 <!DOCTYPE html>
 <html>
+<head>
+    <style>
+        body { background: #2c3e50; display: flex; justify-content: center; align-items: center; height: 100vh; color: white; font-family: sans-serif; }
+        .login-box { background: #fff; color: #333; padding: 30px; border-radius: 10px; text-align: center; }
+        input { width: 100%; padding: 10px; margin: 10px 0; box-sizing: border-box; }
+        button { background: #1a73e8; color: white; border: none; padding: 10px 20px; cursor: pointer; width: 100%; }
+    </style>
+</head>
 <body>
-    <h2>Admin Login</h2>
-    <form method="POST">
-        <input type="password" name="password" placeholder="Enter Password" required>
-        <button type="submit">Login</button>
-    </form>
-    <p>নতুন পণ্য যোগ করতে চান? <a href="/add_item">এখানে ক্লিক করুন</a></p>
-    {% with messages = get_flashed_messages() %}
-      {% if messages %}<p style="color:red;">{{ messages[0] }}</p>{% endif %}
-    {% endwith %}
+    <div class="login-box">
+        <h2>Admin Login</h2>
+        <form method="POST">
+            <input type="password" name="password" placeholder="Admin Password" required>
+            <button type="submit">Login</button>
+        </form>
+        <p><a href="/add_item">User: Add Item Here</a></p>
+    </div>
 </body>
 </html>

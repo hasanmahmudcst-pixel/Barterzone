@@ -1,16 +1,27 @@
 <!DOCTYPE html>
 <html>
+<head>
+    <title>Add Product</title>
+    <style>
+        body { font-family: sans-serif; background: #f0f2f5; display: flex; justify-content: center; padding-top: 50px; }
+        .card { background: white; padding: 30px; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); width: 400px; }
+        .pay-notice { background: #fff3cd; padding: 15px; border: 1px solid #ffeeba; margin-bottom: 20px; }
+        input { width: 100%; padding: 10px; margin: 8px 0; border: 1px solid #ddd; border-radius: 5px; box-sizing: border-box; }
+        button { background: #28a745; color: white; width: 100%; padding: 12px; border: none; cursor: pointer; border-radius: 5px; }
+    </style>
+</head>
 <body>
-    <h2>Add New Item</h2>
-    <div style="background:#e2f3f5; padding:15px; border-radius:5px;">
-        <p><strong>পেমেন্ট ইনস্ট্রাকশন:</strong></p>
-        <p>চার্জ: 1$ (১২০ টাকা)। বিকাশ/নগদ (Personal): <b>01712572371</b></p>
+    <div class="card">
+        <h2>Submit Product</h2>
+        <div class="pay-notice">
+            <b>পেমেন্ট ইনস্ট্রাকশন:</b> বিকাশ/নগদে (Personal) <b>১২০ টাকা ($1)</b> পাঠান: <b>01712572371</b>। তারপর ট্রানজেকশন আইডি দিন।
+        </div>
+        <form method="POST">
+            <input type="text" name="name" placeholder="Item Name" required>
+            <input type="number" name="price" placeholder="Price (TK)" required>
+            <input type="text" name="trx_id" placeholder="Transaction ID (Required)" required>
+            <button type="submit">Submit & Pay</button>
+        </form>
     </div>
-    <form method="POST" style="margin-top:15px;">
-        <input type="text" name="name" placeholder="Item Name" required><br><br>
-        <input type="number" name="price" placeholder="Price" required><br><br>
-        <input type="text" name="trx_id" placeholder="Transaction ID (Required)" required><br><br>
-        <button type="submit" style="background:green; color:white;">Pay & Submit</button>
-    </form>
 </body>
 </html>
