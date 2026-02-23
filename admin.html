@@ -1,31 +1,27 @@
-<div style="padding: 20px;">
-    <h1>অ্যাডমিন প্যানেল</h1>
-    <a href="/logout">লগআউট</a>
+<!DOCTYPE html>
+<html>
+<body>
+    <h2>Admin Dashboard</h2>
+    <form method="POST" style="border:1px solid #ccc; padding:15px;">
+        <h3>Update Site Content</h3>
+        <label>About Us:</label><br>
+        <textarea name="about" rows="3" style="width:100%">{{ settings.about }}</textarea><br><br>
+        <label>Refund Policy:</label><br>
+        <textarea name="refund" rows="3" style="width:100%">{{ settings.refund }}</textarea><br><br>
+        <button type="submit">Update Site Info</button>
+    </form>
     <hr>
-    
-    <h3>ইউজারদের পাঠানো পণ্যের তালিকা:</h3>
-    <table border="1" cellpadding="10" style="width:100%; border-collapse: collapse;">
-        <tr style="background: #eee;">
-            <th>পণ্যের নাম</th>
-            <th>ইউজার ইমেইল</th>
-            <th>TrxID</th>
-        </tr>
-        {% for item in items %}
+    <h3>All Submitted Products</h3>
+    <table border="1">
+        <tr><th>Name</th><th>Trx ID</th><th>Status</th></tr>
+        {% for p in products %}
         <tr>
-            <td>{{ item.name }}</td>
-            <td>{{ item.email }}</td>
-            <td>{{ item.trxid }}</td>
+            <td>{{ p.name }}</td>
+            <td>{{ p.trx_id }}</td>
+            <td>{{ p.status }}</td>
         </tr>
         {% endfor %}
     </table>
-
-    <hr>
-    <h3>সাইট সেটিংস আপডেট করুন:</h3>
-    <form method="POST">
-        <p>About Us:</p>
-        <textarea name="about_text" rows="5" style="width:100%;">{{ settings.about }}</textarea>
-        <p>Refund Policy:</p>
-        <textarea name="refund_text" rows="5" style="width:100%;">{{ settings.refund }}</textarea><br><br>
-        <button type="submit">Update Website</button>
-    </form>
-</div>
+    <br><a href="/logout">Logout</a>
+</body>
+</html>

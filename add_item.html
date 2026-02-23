@@ -1,15 +1,16 @@
-<div style="max-width: 400px; margin: auto; padding: 20px; border: 1px solid #ddd; border-radius: 10px;">
-    <h2>পণ্য যোগ করুন</h2>
-    <form method="POST">
-        <label>পণ্যের নাম:</label><br>
-        <input type="text" name="item_name" required style="width:100%; padding:8px; margin:10px 0;"><br>
-        
-        <label>আপনার ইমেইল:</label><br>
-        <input type="email" name="user_email" required style="width:100%; padding:8px; margin:10px 0;"><br>
-        
-        <label>TrxID (পেমেন্ট আইডি):</label><br>
-        <input type="text" name="trx_id" required style="width:100%; padding:8px; margin:10px 0;"><br>
-        
-        <button type="submit" style="background: #28a745; color: white; padding: 10px; width: 100%; border: none; border-radius: 5px;">সাবমিট করুন</button>
+<!DOCTYPE html>
+<html>
+<body>
+    <h2>Add New Item</h2>
+    <div style="background:#e2f3f5; padding:15px; border-radius:5px;">
+        <p><strong>পেমেন্ট ইনস্ট্রাকশন:</strong></p>
+        <p>চার্জ: 1$ (১২০ টাকা)। বিকাশ/নগদ (Personal): <b>01712572371</b></p>
+    </div>
+    <form method="POST" style="margin-top:15px;">
+        <input type="text" name="name" placeholder="Item Name" required><br><br>
+        <input type="number" name="price" placeholder="Price" required><br><br>
+        <input type="text" name="trx_id" placeholder="Transaction ID (Required)" required><br><br>
+        <button type="submit" style="background:green; color:white;">Pay & Submit</button>
     </form>
-</div>
+</body>
+</html>

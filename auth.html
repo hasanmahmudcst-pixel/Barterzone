@@ -1,5 +1,14 @@
-<form action="/add" method="GET">
-    <h2>লগইন করুন</h2>
-    <input type="email" placeholder="ইমেইল" required style="width:100%; padding:10px; margin:10px 0;">
-    <button type="submit" style="width:100%; padding:10px; background:#28a745; color:white; border:none; cursor:pointer;">প্রবেশ করুন</button>
-</form>
+<!DOCTYPE html>
+<html>
+<body>
+    <h2>Admin Login</h2>
+    <form method="POST">
+        <input type="password" name="password" placeholder="Enter Password" required>
+        <button type="submit">Login</button>
+    </form>
+    <p>নতুন পণ্য যোগ করতে চান? <a href="/add_item">এখানে ক্লিক করুন</a></p>
+    {% with messages = get_flashed_messages() %}
+      {% if messages %}<p style="color:red;">{{ messages[0] }}</p>{% endif %}
+    {% endwith %}
+</body>
+</html>
