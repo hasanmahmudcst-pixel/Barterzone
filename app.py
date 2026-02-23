@@ -1,20 +1,30 @@
 from flask import Flask, render_template, request, redirect, url_for, session
 from functools import wraps
+from pymongo import MongoClient
+import os
 
-app = Flask(__name__, template_folder='.')
-app.secret_key = "barterzone_secret_key" # সেশন নিরাপত্তার জন্য
+app = Flask(__name__)
+app.secret_key = "barterzone_secret_key"
 
-# অ্যাডমিন ক্রেডেনশিয়াল (প্রয়োজনে এখান থেকে পরিবর্তন করুন)
-ADMIN_USERNAME = "admin@berterzone.com"
-ADMIN_PASSWORD = "Habiba@19892"
+# --- MongoDB কানেকশন (নিচে আপনার নিজের লিঙ্কটি বসাতে হবে) ---
+# বর্তমানে এটি একটি ডামি লিঙ্ক হিসেবে দেওয়া আছে। 
+MONGO_URI = "mongodb+srv://adminberterzone:Habiba19892@cluster0.pg3xfac.mongodb.net/?appName=Cluster0"
+client = MongoClient(MONGO_URI)
+db = client['barterzone_db'] # ডাটাবেস নাম
+items_collection = db['items'] # পণ্যের কালেকশন
+settings_collection = db['settings'] # সেটিংস কালেকশন
 
-items_list = []
-site_settings = {
-    'about': 'আমাদের সম্পর্কে তথ্য এখানে লিখুন।',
-    'refund': 'রিফান্ড পলিসি এখানে লিখুন।'
-}
+# অ্যাডমিন তথ্য
+ADMIN_USERNAME = "adminberterzone"
+ADMIN_PASSWORD = "Habiba19892"
 
-# অ্যাডমিন প্যানেল সুরক্ষিত করার ডেকোরেটর
+# শুরুতে সেটিংস ডাটাবেসে না থাকলে ডিফল্ট তৈরি করা
+if settings_collection.count_documents({}) == 0:
+    settings_collection.insert_one({
+        'about': 'আমাদের সম্পর্কে তথ্য এখানে লিখুন।',
+        'refund': 'রিফান্ড পলিসি এখানে লিখুন।'
+    })
+
 def login_required(f):
     @wraps(f)
     def decorated_function(*args, **kwargs):
@@ -25,56 +35,58 @@ def login_required(f):
 
 @app.route('/')
 def home():
+    site_settings = settings_collection.find_one({}, {'_id': 0})
     return render_template('index.html', settings=site_settings)
 
 @app.route('/auth')
 def auth():
     return render_template('auth.html')
 
-# পণ্য যোগ করার রুট (আপনার নতুন HTML ডিজাইনের সাথে মিল রেখে)
 @app.route('/add', methods=['GET', 'POST'])
 def add_item():
     if request.method == 'POST':
         item = {
             'name': request.form.get('item_name'),
-            'email': request.form.get('user_email'), # ইমেইল ফিল্ড যুক্ত করা হয়েছে
+            'email': request.form.get('user_email'),
             'trxid': request.form.get('trx_id')
         }
-        items_list.append(item)
+        # ডাটাবেসে পণ্য সেভ করা হচ্ছে
+        items_collection.insert_one(item)
         return redirect(url_for('home'))
     return render_template('add_item.html')
 
-# লগইন রুট
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     error = None
     if request.method == 'POST':
-        user = request.form.get('username')
-        pwd = request.form.get('password')
-        if user == ADMIN_USERNAME and pwd == ADMIN_PASSWORD:
+        if request.form['username'] == ADMIN_USERNAME and request.form['password'] == ADMIN_PASSWORD:
             session['logged_in'] = True
             return redirect(url_for('admin_panel'))
         else:
             error = 'ভুল ইউজারনেম অথবা পাসওয়ার্ড!'
     return render_template('admin_login.html', error=error)
 
-# অ্যাডমিন প্যানেল রুট (আপনার নতুন টেবিল ডিজাইনের সাথে মিল রেখে)
 @app.route('/admin', methods=['GET', 'POST'])
 @login_required
 def admin_panel():
     if request.method == 'POST':
-        site_settings['about'] = request.form.get('about_text')
-        site_settings['refund'] = request.form.get('refund_text')
+        # ডাটাবেসে সেটিংস আপডেট করা হচ্ছে
+        settings_collection.update_one({}, {"$set": {
+            'about': request.form.get('about_text'),
+            'refund': request.form.get('refund_text')
+        }})
         return redirect(url_for('admin_panel'))
-    return render_template('admin.html', items=items_list, settings=site_settings)
+    
+    # ডাটাবেস থেকে সব পণ্য এবং সেটিংস আনা হচ্ছে
+    all_items = list(items_collection.find({}, {'_id': 0}))
+    site_settings = settings_collection.find_one({}, {'_id': 0})
+    return render_template('admin.html', items=all_items, settings=site_settings)
 
-# লগআউট রুট
 @app.route('/logout')
 def logout():
     session.pop('logged_in', None)
     return redirect(url_for('home'))
 
-app = app # Vercel-এর জন্য
-
+app = app
 if __name__ == '__main__':
     app.run(debug=True)
