@@ -1,35 +1,26 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>BarterZone | Home</title>
+    <title>BarterZone</title>
     <style>
         body { font-family: sans-serif; background: #f4f7f6; margin: 0; }
-        .navbar { background: #1a73e8; color: white; padding: 15px; text-align: center; }
-        .navbar a { color: white; text-decoration: none; margin: 0 15px; font-weight: bold; }
-        .container { max-width: 900px; margin: 20px auto; background: white; padding: 20px; border-radius: 10px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
-        .item-list { margin-top: 20px; }
-        .footer-section { background: #eef2f3; padding: 20px; margin-top: 30px; border-radius: 8px; border-left: 5px solid #1a73e8; }
+        .nav { background: #1a73e8; padding: 15px; text-align: center; color: white; }
+        .nav a { color: white; text-decoration: none; margin: 0 15px; }
+        .container { max-width: 800px; margin: 20px auto; background: white; padding: 20px; border-radius: 10px; }
+        .footer { background: #eef2f3; padding: 20px; margin-top: 30px; }
     </style>
 </head>
 <body>
-    <div class="navbar">
-        <a href="/">Home</a> | <a href="/add_item">Add Product</a> | <a href="/login">Admin Login</a>
+    <div class="nav">
+        <a href="/">Home</a> | <a href="/add_item">Add Item</a> | <a href="/login">Admin</a>
     </div>
     <div class="container">
-        <h1>Welcome to BarterZone Marketplace</h1>
-        
-        <div class="item-list">
-            <h3>Latest Products:</h3>
-            {% for p in products %}
-            <div style="border-bottom: 1px solid #eee; padding: 10px;">
-                <strong>{{ p.name }}</strong> - {{ p.price }} TK
-            </div>
-            {% else %}
-            <p>বর্তমানে কোনো পণ্য নেই।</p>
-            {% endfor %}
-        </div>
+        <h1>Marketplace</h1>
+        {% for p in products %}
+        <p><b>{{ p.name }}</b> - {{ p.price }} TK</p>
+        {% endfor %}
 
-        <div class="footer-section">
+        <div class="footer">
             <h3>About Us</h3>
             <p>{{ settings.about }}</p>
             <hr>
